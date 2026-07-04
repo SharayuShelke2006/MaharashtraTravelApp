@@ -121,7 +121,7 @@ class WelcomeScreen extends StatelessWidget {
 
                   TextButton(
                     onPressed: () {
-
+                      context.go("/home");
                     },
                     child: const Text(
                       "Continue as Guest",

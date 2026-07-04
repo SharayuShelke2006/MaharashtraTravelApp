@@ -42,16 +42,23 @@ class PlaceDetailScreen extends StatelessWidget {
   child: SizedBox(height: 24),
 ),
 
-const SliverToBoxAdapter(
-  child: WeatherCard(),
+SliverToBoxAdapter(
+  child:  WeatherCard(
+    latitude: (data["latitude"] as num).toDouble(),
+    longitude: (data["longitude"] as num).toDouble(),
+  ),
 ),
 
 const SliverToBoxAdapter(
   child: SizedBox(height: 24),
 ),
 
-const SliverToBoxAdapter(
-  child: MapsCard(),
+ SliverToBoxAdapter(
+  child: MapsCard(
+  latitude: (data["latitude"] as num).toDouble(),
+  longitude: (data["longitude"] as num).toDouble(),
+  placeName: data["name"],
+),
 ),
 
 const SliverToBoxAdapter(

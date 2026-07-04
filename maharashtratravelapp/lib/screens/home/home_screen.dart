@@ -8,6 +8,8 @@ import 'widgets/featured_place_card.dart';
 import 'widgets/place_card.dart';
 import 'widgets/section_title.dart';
 import '../../widgets/responsive_scaffold.dart';
+import '../../core/routes/app_router.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,27 +28,27 @@ class _HomeScreenState extends State<HomeScreen> {
     return ResponsiveScaffold(
       currentIndex: 0,
       onTap: (index) {
-    switch (index) {
-      case 0:
-        break;
+  switch (index) {
+    case 0:
+      break;
 
-      case 1:
-        // context.go("/explore");
-        break;
+    case 1:
+      context.go("/explore");
+      break;
 
-      case 2:
-        // context.go("/hidden-gems");
-        break;
+    case 2:
+      context.go("/hidden-gems");
+      break;
 
-      case 3:
-        // context.go("/blogs");
-        break;
+    case 3:
+      context.go("/blogs");
+      break;
 
-      case 4:
-        // context.go("/profile");
-        break;
-    }
-      },
+    case 4:
+      context.go("/profile");
+      break;
+  }
+},
       child: SafeArea(
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance

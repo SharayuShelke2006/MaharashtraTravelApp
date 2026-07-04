@@ -11,21 +11,36 @@ import '../../screens/auth/auth_gate.dart';
 import '../../screens/home/home_screen.dart';
 import '../../screens/admin/upload_places.dart';
 import '../../screens/place/place_detail_screen.dart';
+import '../../screens/explore/explore_screen.dart';
+import '../../screens/hidden_gems/hidden_gem_screen.dart';
+import '../../screens/hidden_gems/hidden_gem_detail_screen.dart';
+import '../../screens/hidden_gems/hidden_gem_form_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
   routes: [
-
+   
     GoRoute(
       path: '/',
       builder: (context, state) => const AuthGate(),
     ),
-
+    GoRoute(
+      path: '/hidden-gems',
+      builder: (context, state) => const HiddenGemScreen(),
+    ),
+    GoRoute(
+      path:'/explore',
+      builder: (context, state) => const ExploreScreen(),
+    ),
     GoRoute(
       path: '/onboarding',
       builder: (context, state) => const OnboardingScreen(),
     ),
-
+    GoRoute(
+      path: '/hidden-gem-form',
+      builder: (context, state) => const HiddenGemFormScreen(), 
+    ),
+    
     GoRoute(
       path: '/welcome',
       builder: (context, state) => const WelcomeScreen(),
