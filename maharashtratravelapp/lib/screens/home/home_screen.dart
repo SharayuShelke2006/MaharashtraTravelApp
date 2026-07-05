@@ -162,10 +162,16 @@ class _HomeScreenState extends State<HomeScreen> {
         sliver: SliverGrid(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              return PlaceCard(
-                data: docs[index].data()
-                    as Map<String, dynamic>,
-              );
+              final data =
+    docs[index].data() as Map<String, dynamic>;
+
+return PlaceCard(
+  data: {
+    ...data,
+    "id": docs[index].id,
+  },
+
+);
             },
             childCount: docs.length,
           ),
@@ -185,13 +191,18 @@ class _HomeScreenState extends State<HomeScreen> {
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 18),
-              child: PlaceCard(
-                data: docs[index].data()
-                    as Map<String, dynamic>,
-              ),
-            );
+           final data =
+    docs[index].data() as Map<String, dynamic>;
+
+return Padding(
+  padding: const EdgeInsets.only(bottom: 18),
+  child: PlaceCard(
+    data: {
+      ...data,
+      "id": docs[index].id,
+    },
+  ),
+);
           },
           childCount: docs.length,
         ),

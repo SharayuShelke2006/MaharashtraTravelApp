@@ -3,19 +3,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class PlaceCard extends StatefulWidget {
+class SavedPlaceCard extends StatefulWidget {
   final Map<String, dynamic> data;
 
-  const PlaceCard({
+  const SavedPlaceCard({
     super.key,
     required this.data,
   });
 
   @override
-  State<PlaceCard> createState() => _PlaceCardState();
+  State<SavedPlaceCard> createState() => _SavedPlaceCardState();
 }
 
-class _PlaceCardState extends State<PlaceCard> {
+class _SavedPlaceCardState extends State<SavedPlaceCard> {
   bool isSaved = false;
 
   final String uid = FirebaseAuth.instance.currentUser!.uid;

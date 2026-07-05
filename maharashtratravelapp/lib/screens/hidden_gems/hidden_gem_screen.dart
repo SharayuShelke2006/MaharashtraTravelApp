@@ -78,11 +78,11 @@ class _HiddenGemScreenState
             break;
 
           case 3:
-            // Blogs
+            GoRouter.of(context).go('/blogs');
             break;
 
           case 4:
-            // Profile
+            GoRouter.of(context).go('/profile');
             break;
         }
       },

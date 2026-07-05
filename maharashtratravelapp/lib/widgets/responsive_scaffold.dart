@@ -7,12 +7,14 @@ class ResponsiveScaffold extends StatelessWidget {
   final Widget child;
   final int currentIndex;
   final ValueChanged<int> onTap;
+  final Widget? floatingActionButton;
 
   const ResponsiveScaffold({
     super.key,
     required this.child,
     required this.currentIndex,
     required this.onTap,
+    this.floatingActionButton,
   });
 
   @override
