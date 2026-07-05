@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class HomeHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
+    final uid = user?.uid;
 
     final username = user?.displayName ??
         user?.email?.split("@").first ??
@@ -64,26 +66,37 @@ class HomeHeader extends StatelessWidget {
                   ),
                 ),
 
-                CircleAvatar(
-                  radius: 24,
-                  backgroundColor: Theme.of(context)
-                      .colorScheme
-                      .secondary
-                      .withOpacity(.15),
-                  backgroundImage:
-                      user?.photoURL != null
-                          ? NetworkImage(
-                              user!.photoURL!,
+                FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                  future: uid == null
+                      ? null
+                      : FirebaseFirestore.instance.collection('users').doc(uid).get(),
+                  builder: (context, snapshot) {
+                    final profileImage = snapshot.data?.data()?['profileImage']?.toString().trim();
+                    final fallbackPhoto = user?.photoURL?.trim();
+                    final imageUrl = (profileImage != null && profileImage.isNotEmpty)
+                        ? profileImage
+                        : (fallbackPhoto != null && fallbackPhoto.isNotEmpty)
+                            ? fallbackPhoto
+                            : null;
+
+                    return CircleAvatar(
+                      radius: 24,
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .secondary 
+                          .withOpacity(.15),
+                      backgroundImage: imageUrl != null &&
+                              (imageUrl.startsWith('http://') || imageUrl.startsWith('https://'))
+                          ? NetworkImage(imageUrl)
+                          : null,
+                      child: imageUrl == null || !(imageUrl.startsWith('http://') || imageUrl.startsWith('https://'))
+                          ? Icon(
+                              Icons.person,
+                              color: Theme.of(context).colorScheme.secondary,
                             )
                           : null,
-                  child: user?.photoURL == null
-                      ? Icon(
-                          Icons.person,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondary,
-                        )
-                      : null,
+                    );
+                  },
                 ),
 
               ],

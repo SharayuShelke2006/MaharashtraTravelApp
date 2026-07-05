@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../core/services/location_service.dart';
 import '../../widgets/responsive_scaffold.dart';
+import 'package:go_router/go_router.dart';
 
 import '../home/widgets/category_chips.dart';
 import '../home/widgets/search_bar_widget.dart';
@@ -56,7 +57,22 @@ class _ExploreScreenState
     return ResponsiveScaffold(
       currentIndex: 1,
       onTap: (index) {
-        // TODO
+        switch (index) {
+          case 0:
+            context.go('/home');
+            break;
+          case 1:
+            break;
+          case 2:
+            context.go('/hidden-gems');
+            break;
+          case 3:
+            context.go('/blogs');
+            break;
+          case 4:
+            context.go('/profile');
+            break;
+        }
       },
       child: SafeArea(
         child: StreamBuilder<QuerySnapshot>(

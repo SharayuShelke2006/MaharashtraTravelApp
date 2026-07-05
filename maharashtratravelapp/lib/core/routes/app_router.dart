@@ -5,7 +5,7 @@ import '../../screens/auth/login_screen.dart';
 import '../../screens/auth/register_screen.dart';
 import '../../screens/auth/welcome_screen.dart';
 import '../../screens/onboarding/onboarding_screen.dart';
-import '../../screens/splash/splash_screen.dart';
+import '../../screens/profile/profile_screen.dart';
 import '../../screens/auth/forgot_password_screen.dart';
 import '../../screens/auth/auth_gate.dart';
 import '../../screens/home/home_screen.dart';
@@ -15,6 +15,8 @@ import '../../screens/explore/explore_screen.dart';
 import '../../screens/hidden_gems/hidden_gem_screen.dart';
 import '../../screens/hidden_gems/hidden_gem_detail_screen.dart';
 import '../../screens/hidden_gems/hidden_gem_form_screen.dart';
+import '../../screens/blogs/show_blog_screen.dart';
+import '../../screens/blogs/create_blog_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -33,6 +35,10 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const ExploreScreen(),
     ),
     GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
       path: '/onboarding',
       builder: (context, state) => const OnboardingScreen(),
     ),
@@ -40,7 +46,14 @@ final GoRouter appRouter = GoRouter(
       path: '/hidden-gem-form',
       builder: (context, state) => const HiddenGemFormScreen(), 
     ),
-    
+    GoRoute(
+      path:'/blogs',
+      builder: (context, state) =>  BlogScreen(),
+    ),
+    GoRoute(
+      path: '/create-blog',
+      builder: (context, state) => const CreateBlogScreen(),
+    ),
     GoRoute(
       path: '/welcome',
       builder: (context, state) => const WelcomeScreen(),

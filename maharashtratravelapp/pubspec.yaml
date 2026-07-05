@@ -50,6 +50,9 @@ dependencies:
   image_picker: ^1.0.7
   flutter_dotenv: ^5.1.0
   google_maps_flutter: ^2.6.0
+  flutter_quill: ^11.4.1
+  uuid: ^4.5.1
+  flutter_quill_extensions: ^11.0.0
 
 
 dev_dependencies:
@@ -78,7 +81,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
-    - .env
+    - assets/.env
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
