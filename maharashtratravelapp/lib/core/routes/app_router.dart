@@ -17,6 +17,9 @@ import '../../screens/hidden_gems/hidden_gem_detail_screen.dart';
 import '../../screens/hidden_gems/hidden_gem_form_screen.dart';
 import '../../screens/blogs/show_blog_screen.dart';
 import '../../screens/blogs/create_blog_screen.dart';
+import '../../screens/profile/saved_place_screen.dart';
+import '../../screens/profile/liked_blog_screen.dart';
+import '../../screens/profile/drafts_screen.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/',
@@ -37,6 +40,22 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/drafts',
+      builder: (context, state) => const DraftsScreen(),
+    ),
+    GoRoute(
+      path: '/blog-create',
+      builder: (context, state) => const CreateBlogScreen(),
+    ),
+    GoRoute(
+      path:'/liked-blogs',
+      builder: (context, state) => const LikedBlogsScreen(),
+    ),
+    GoRoute(
+      path: '/saved-places',
+      builder: (context, state) => const SavedPlacesScreen(),
     ),
     GoRoute(
       path: '/onboarding',

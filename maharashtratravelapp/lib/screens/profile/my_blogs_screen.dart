@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../models/blog_model.dart';
 import '../blogs/blog_detail_screen.dart';
-import '../blogs/create_blog_screen.dart';
 import 'edit_blog_screen.dart';
 import 'widgets/my_blog_card.dart';
 
@@ -29,13 +29,9 @@ class MyBlogsScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const CreateBlogScreen(),
-            ),
-          );
-        },
+  
+    GoRouter.of(context).go("/create-blog");
+  },
         icon: const Icon(Icons.add),
         label: const Text('New Blog'),
       ),

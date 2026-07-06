@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class EmptySavedPlaces extends StatelessWidget {
   const EmptySavedPlaces({super.key});
@@ -44,7 +45,7 @@ class EmptySavedPlaces extends StatelessWidget {
 
             FilledButton.icon(
               onPressed: () {
-                Navigator.pop(context);
+                GoRouter.of(context).go("/home");
               },
               icon: const Icon(Icons.explore),
               label: const Text("Explore Places"),
