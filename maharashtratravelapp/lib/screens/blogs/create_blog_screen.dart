@@ -11,12 +11,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../models/blog_model.dart';
 import '../../core/services/blog_service.dart';
 import '../../../core/services/clodinary_service.dart';
+import '../../../core/services/draft_service.dart';
 import 'widgets/blog_cover_picker.dart';
 import 'widgets/blog_editor.dart';
 import 'widgets/category_dropdown.dart';
 import 'widgets/place_selector.dart';
 import 'widgets/publish_button.dart';
 import 'widgets/blog_image_embed.dart';
+import 'widgets/draft_publish_button.dart';
+import 'package:go_router/go_router.dart';
 
 class CreateBlogScreen extends StatefulWidget {
   const CreateBlogScreen({super.key});
@@ -28,6 +31,8 @@ class CreateBlogScreen extends StatefulWidget {
 class _CreateBlogScreenState extends State<CreateBlogScreen> {
   final titleController = TextEditingController();
   final BlogService blogService = BlogService();
+  final DraftService draftService =
+    DraftService();
   final FirebaseAuth auth = FirebaseAuth.instance;
   
   late final QuillController quillController;
@@ -61,14 +66,16 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
       imageQuality: 80,
     );
 
-    if (image == null) return;
+    if (image == null || !mounted) return;
 
     if (kIsWeb) {
       final bytes = await image.readAsBytes();
+      if (!mounted) return;
       setState(() {
         coverImageBytes = bytes;
       });
     } else {
+      if (!mounted) return;
       setState(() {
         coverImage = File(image.path);
       });
@@ -84,8 +91,91 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
       return await CloudinaryService.uploadImage(coverImage!);
     }
   }
+Future<void> saveDraft() async {
+  FocusScope.of(context).unfocus();
+
+  setState(() {
+    publishing = true;
+  });
+
+  try {
+    String? uploadedCover;
+
+    if (kIsWeb) {
+      if (coverImageBytes != null) {
+        uploadedCover = await CloudinaryService.uploadImage(
+          null,
+          webBytes: coverImageBytes,
+        );
+      }
+    } else {
+      if (coverImage != null) {
+        uploadedCover = await CloudinaryService.uploadImage(
+          coverImage!,
+        );
+      }
+    }
+
+    final user = auth.currentUser;
+    if (user == null) {
+      throw Exception("User not logged in.");
+    }
+
+    final draft = BlogModel(
+      id: const Uuid().v4(),
+      title: titleController.text.trim(),
+      coverImage: uploadedCover ?? "",
+      content: quillController.document.toDelta().toJson(),
+      category: selectedCategory ?? "",
+      relatedPlaceId: selectedPlaceId,
+      authorId: user.uid,
+      authorName: user.displayName ?? "Traveler",
+      authorPhoto: user.photoURL,
+      likes: 0,
+      comments: 0,
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+    );
+
+    await draftService.saveDraft(draft);
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Draft saved"),
+      ),
+    );
+   
+
+    // Delay so SnackBar is shown before leaving the page
+    await Future.delayed(const Duration(milliseconds: 300));
+
+    if (!mounted) return;
+    print("Navigating to drafts screen after saving draft.");
+     GoRouter.of(context).go("/drafts");
+     print("Navigation to drafts screen completed.");
+
+   
+  } catch (e) {
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(e.toString()),
+      ),
+    );
+  } finally {
+    if (mounted) {
+      setState(() {
+        publishing = false;
+      });
+    }
+  }
+}
 
   Future<void> publishBlog() async {
+    if (!mounted) return;
     FocusScope.of(context).unfocus();
 
     if (titleController.text.trim().isEmpty) {
@@ -111,6 +201,7 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
       return;
     }
 
+    if (!mounted) return;
     setState(() {
       publishing = true;
     });
@@ -120,6 +211,8 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
       if (uploadedUrl == null) {
         throw Exception("Failed to upload cover image.");
       }
+
+      if (!mounted) return;
 
       final user = auth.currentUser;
       if (user == null) {
@@ -132,7 +225,7 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
         id: blogId,
         title: titleController.text.trim(),
         coverImage: uploadedUrl,
-        content: delta.toJson(), 
+        content: delta.toJson(),
         category: selectedCategory!,
         relatedPlaceId: selectedPlaceId,
         authorId: user.uid,
@@ -148,19 +241,24 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
 
       if (!mounted) return;
       _showSnackBar("Blog Published 🎉");
-      Navigator.pop(context);
+      GoRouter.of(context).push("/my-blogs");
       
-    } catch (e) {
+          } catch (e) {
       if (!mounted) return;
       _showSnackBar(e.toString());
       
-      setState(() {
-        publishing = false;
-      });
+
+    } finally {
+      if (mounted) {
+        setState(() {
+          publishing = false;
+        });
+      }
     }
   }
 
   void _showSnackBar(String message) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
@@ -291,10 +389,11 @@ class _CreateBlogScreenState extends State<CreateBlogScreen> {
               const SizedBox(height: 30),
 
               // ---------------- PUBLISH ----------------
-              PublishButton(
-                loading: publishing,
-                onPressed: publishBlog,
-              ),
+              DraftPublishButtons(
+  loading: publishing,
+  onSaveDraft: saveDraft,
+  onPublish: publishBlog,
+),
               const SizedBox(height: 40),
             ],
           ),

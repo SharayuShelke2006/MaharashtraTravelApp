@@ -10,6 +10,7 @@ import 'widgets/profile_action_tile.dart';
 import 'widgets/edit_profile_bottom_sheet.dart';
 import 'widgets/saved_place_card.dart';
 import 'my_blogs_screen.dart';
+import 'drafts_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -107,7 +108,7 @@ print(uid);
                         "Places you've saved for later",
                     color: Colors.green,
                     onTap: () {
-                      // TODO
+                      GoRouter.of(context).go("/saved-places");
                     },
                   ),
 
@@ -117,9 +118,24 @@ print(uid);
                     subtitle:
                         "Blogs you've liked",
                     color: Colors.red,
-                    onTap: () {},
+                    onTap: () {
+                      GoRouter.of(context).go("/liked-blogs");
+                    },
                   ),
-
+                  ProfileActionTile(
+  icon: Icons.drafts_rounded,
+  title: "Drafts",
+  subtitle: "Continue writing unfinished blogs",
+  color: Colors.deepPurple,
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const DraftsScreen(),
+      ),
+    );
+  },
+),
                   ProfileActionTile(
                     icon: Icons.article_rounded,
                     title: "Your Blogs",
