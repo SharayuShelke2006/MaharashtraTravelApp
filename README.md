@@ -72,7 +72,7 @@ I wanted to create a community-driven platform where people could discover place
 
 ### 1. 🗺️ Explore Tourist Destinations
 
-- Browse popular tourist attractions across Maharashtra.
+- Browse popular tourist attractions across Maharashtra(currently).
 - Explore destinations through visually appealing place cards.
 - View destination details and location information.
 - Search for destinations.
@@ -147,7 +147,7 @@ Location-based functionality is integrated using Google Maps services.
 - Calculate distances between locations.
 - Support location-aware travel discovery.
 - Provide geographical context for destinations.
-
+- View Nearby Travel Spots
 ---
 
 ## 🛠 Technology Stack
